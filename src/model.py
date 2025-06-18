@@ -1,13 +1,11 @@
-import os
-os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
-
 import math
-from dataclasses import dataclass
 from typing import List, Tuple, Optional, Dict
 
 import torch
 import torch.nn.functional as F
 from torch.utils.checkpoint import checkpoint
+
+from configs.model_args.model_args_large import ModelArgs
 
 # Check Flash Attention 2 availability
 try:
@@ -22,76 +20,6 @@ except ImportError:
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 dtype = torch.bfloat16 if device.type == "cuda" and torch.cuda.is_bf16_supported() else torch.float16
 print(f"Device = {device} | AMP dtype = {dtype}")
-
-@dataclass
-class ModelArgs:
-    """
-    d_model (int): Dimensionality of the model's embeddings.
-    num_heads (int): Number of attention heads for the query tensors (GQA).
-    query_groups (int): Number of query groups for the key and value tensors (GQA).
-    d_ffn (int): Dimensionality of the feed forward network. d_ffn = 4 * d_model.
-    num_layers (int): Number of times the transformer block will be stacked.
-    dropout (float): Probability of random model components being dropped out.
-    rope_base (float): Exponential base of the RoPE inverse frequency.
-    rms_norm_eps (float): Small epsilon value to ensure numerical stability in RMSNorm.
-    vocab_size (int): Number of unique tokens the model can recognize.
-    max_seq_len (int): Longest input sequence the model can handle at once.
-    tie_weights (bool): Flag to tie weights or not.
-    pad_token_id (int): Number reserved for the padding token which will be masked out.
-    eos_token_id (int): End of sequence token id which is typically vocab_size - 1.
-    gradient_checkpointing (bool): Flag to apply gradient checkpointing or not.
-    """
-    d_model: int = 1440
-    num_heads: int = 24
-    query_groups: int = 12
-    d_ffn: int = 5760
-    num_layers: int = 20
-    dropout: float = 0.2
-    rope_base: float = 10000.0
-    rms_norm_eps: float = 1e-7
-    vocab_size: int = 65536
-    max_seq_len: int = 2048
-    tie_weights: bool = False
-    pad_token_id: int = 0
-    eos_token_id: int = 65535
-    gradient_checkpointing: bool = False
-
-@dataclass
-class TrainingArgs:
-    """
-    learning_rate (float): Hyperparameter which controls how big an optimizer step is.
-    epochs (int): Number of iterations through the training loop.
-    batch_size (int): Number of examples being processed in parallel.
-    epsilon (float): Small epsilon value to ensure numerical stability in Adam optimizer.
-    clip_grad_norm (float): Value to clip gradient's L2 Norms. Combats exploding gradients problem.
-    weight_decay (float): Regularization technique to ensure weight updates are not too large.
-    betas (float): Exponential weighted moving averages used in Adam optimizers.
-    warmup_epochs (int): Number of warmup epoch if using a learning rate scheduler.
-    eta_min (float): Minimum learning rate using in the CosineAnnealingLR scheduler.
-    num_workers (int): Number of processes to load data in parallel.
-    pin_memory (bool): Speeds up data transfer to the GPU by using pinned (page-locked) memory.
-    persistent_workers (bool): Whether to keep workers alive from epoch to epoch.
-    grad_accum_steps (int): Number of gradient accumulation steps to stimulate a larger batch size.
-    logging_steps (int): Number of training steps before each log.
-    eval_steps (int): Model is tested on a validation set every time this value is reached.
-    save_steps (int): Save model checkpoint every time this value is reached.
-    """
-    learning_rate: float = 2e-4
-    epochs: int = 300
-    batch_size: int = 256
-    epsilon: float = 1e-6
-    clip_grad_norm: float = 1.0
-    weight_decay: float = 5e-4
-    betas: Tuple[float, float] = (0.9, 0.95)
-    warmup_epochs: int = 50
-    eta_min: float = 6e-7
-    num_workers: int = 8
-    pin_memory: bool = True
-    persistent_workers: bool = True
-    grad_accum_steps: int = 4
-    logging_steps: int = 100
-    eval_steps: int = 500
-    save_steps: int = 500
 
 class RoPE(torch.nn.Module):
     """Rotary positional embeddings (RoPE) to be applied to the query and key vectors.
