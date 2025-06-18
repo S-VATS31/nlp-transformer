@@ -8,6 +8,8 @@ based on different ModelArgs parameter sizes for better
 training and convergence.
 """
 
+from dataclass import dataclasses
+
 @dataclass
 class ModelArgs:
     """
