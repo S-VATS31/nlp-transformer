@@ -8,7 +8,7 @@ based on different ModelArgs parameter sizes for better
 training and convergence.
 """
 
-from dataclass import dataclasses
+from dataclasses import dataclass
 
 @dataclass
 class ModelArgs:
