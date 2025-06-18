@@ -1,4 +1,6 @@
 """
+Medium configuration of model arguments.
+
 This configuration contains ~811 million parameters.
 
 Note that the training arguments will need to updated 
