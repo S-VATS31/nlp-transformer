@@ -12,6 +12,8 @@ based on different ModelArgs parameter sizes for better
 training and convergence.
 """
 
+from dataclasses import dataclass
+
 @dataclass
 class ModelArgs:
     """
