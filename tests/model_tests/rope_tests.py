@@ -66,13 +66,13 @@ class TestRoPE(unittest.TestCase):
             self.assertTrue(torch.isfinite(x_rope).all())
           
     def test_backward_pass(self):
-    """Ensure backward pass computes gradients."""
-    self.x.requires_grad_()
-    out = self.rope(self.x)
-    loss = out.sum()
-    loss.backward()
-    self.assertIsNotNone(self.x.grad)
-    self.assertTrue(torch.isfinite(self.x.grad).all())
+        """Ensure backward pass computes gradients."""
+        self.x.requires_grad_()
+        out = self.rope(self.x)
+        loss = out.sum()
+        loss.backward()
+        self.assertIsNotNone(self.x.grad)
+        self.assertTrue(torch.isfinite(self.x.grad).all())
 
 if __name__ == "__main__":
     unittest.main()
