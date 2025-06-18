@@ -1,4 +1,8 @@
 from dataclasses import dataclass
+"""
+This configuration contains ~811 million parameters.
+Note that the training arguments will need to updated based on different ModelArgs parameter sizes.
+"""
 
 @dataclass
 class ModelArgs:
