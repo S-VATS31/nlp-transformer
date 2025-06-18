@@ -1,4 +1,6 @@
 """
+Large configuration of model arguments.
+
 This configuration contains ~7.5 billion parameters.
 
 Note that the training arguments will need to updated 
