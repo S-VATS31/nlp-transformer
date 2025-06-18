@@ -2,6 +2,10 @@
 Extra large configuration of model arguments.
 
 This configuration contains ~13 billion parameters.
+NOTE: This configuration has been not been tested due to the
+computational power needed. This is just a rough estimate based
+on the formula:
+ - Total parameters ≈ L * (4 * d_model^2 + 2 * d_model * d_ffn) + 2 * d_model * V
 
 Note that the training arguments will need to updated 
 based on different ModelArgs parameter sizes for better
