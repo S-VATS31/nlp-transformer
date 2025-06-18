@@ -1,6 +1,9 @@
 """
 This configuration contains ~811 million parameters.
-Note that the training arguments will need to updated based on different ModelArgs parameter sizes.
+
+Note that the training arguments will need to updated 
+based on different ModelArgs parameter sizes for better
+training and convergence.
 """
 
 from dataclasses import dataclass
