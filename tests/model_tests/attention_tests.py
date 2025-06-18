@@ -104,3 +104,6 @@ class TestAttention(unittest.TestCase):
 
             self.assertEqual(q_rope.shape, (train_args.batch_size, self.T, self.attention.num_heads, self.attention.head_dim))
             self.assertEqual(k_rope.shape, (train_args.batch_size, self.T, self.attention.query_groups, self.attention.head_dim))
+
+if __name__ == "__main__":
+    unittest.main()
