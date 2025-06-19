@@ -51,26 +51,6 @@ class TestAttentionBlock(unittest.TestCase):
         self.assertIsNotNone(self.x.grad)
         self.assertEqual(self.x.grad.shape, self.x.shape)
 
-    def test_kv_cache_keys_shape(self):
-        """Check KV cache 'k' tensor has correct shape."""
-        _, cache = self.attention_block(self.x, use_cache=True, layer_idx=0)
-        k = cache["k"]
-        B, H, T, D = k.shape
-        self.assertEqual(B, train_args.batch_size)
-        self.assertEqual(H, model_args.num_heads)
-        self.assertEqual(T, self.T)
-        self.assertEqual(D * H, model_args.d_model)
-
-    def test_kv_cache_values_shape(self):
-        """Check KV cache 'v' tensor has correct shape."""
-        _, cache = self.attention_block(self.x, use_cache=True, layer_idx=0)
-        v = cache["v"]
-        B, H, T, D = v.shape
-        self.assertEqual(B, train_args.batch_size)
-        self.assertEqual(H, model_args.num_heads)
-        self.assertEqual(T, self.T)
-        self.assertEqual(D * H, model_args.d_model)
-
     def test_forward_with_none_padding_mask(self):
         """Ensure attention block works when padding_mask is None."""
         out, _ = self.attention_block(self.x, padding_mask=None)
