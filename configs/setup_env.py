@@ -1,7 +1,10 @@
 import torch
 
 def setup():
-    """Set up device, dtype (AMP), and Flash Attention 2 package."""
+    """Set up device, dtype (AMP), and Flash Attention 2 package.
+
+    
+    """
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     dtype = torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
     # Check Flash Attention 2 availability
